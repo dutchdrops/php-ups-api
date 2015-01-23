@@ -1,5 +1,5 @@
 {
-    "name": "gabrielbull/ups-api",
+    "name": "dutchdrops/php-ups-api",
     "type": "library",
     "description": "UPS API PHP Wrapper",
     "keywords": ["ups", "api", "wrapper", "quantum view", "tracking", "shipping", "rate", "rating", "time in transit"],
