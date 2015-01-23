@@ -30,13 +30,13 @@ abstract class Ups
      * @var string
      * @deprecated
      */
-    protected $productionBaseUrl = 'https://onlinetools.ups.com/ups.app/xml';
+    protected $productionBaseUrl = 'https://www.ups.com/ups.app/xml';
 
     /**
      * @var string
      * @deprecated
      */
-    protected $integrationBaseUrl = 'https://wwwcie.ups.com/ups.app/xml';
+    protected $integrationBaseUrl = 'https://www.ups.com//ups.app/xml';
 
     /**
      * @var bool
@@ -111,6 +111,8 @@ abstract class Ups
         $accessRequest->appendChild($xml->createElement("AccessLicenseNumber", $this->accessKey));
         $accessRequest->appendChild($xml->createElement("UserId", $this->userId));
         $accessRequest->appendChild($xml->createElement("Password", $this->password));
+
+
 
         return $xml->saveXML();
     }

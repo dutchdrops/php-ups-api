@@ -14,8 +14,8 @@ class PaymentInformation {
             case 'prepaid':
                 $this->Prepaid = new \stdClass();
                 $this->Prepaid->BillShipper = new \stdClass();
-                if (isset($attributes->AccountNumber)) {
-                    $this->Prepaid->BillShipper->AccountNumber = $attributes->AccountNumber;
+                if (isset($attributes->ShipperNumber)) {
+                    $this->Prepaid->BillShipper->AccountNumber = $attributes->ShipperNumber;
                 }
 
                 break;

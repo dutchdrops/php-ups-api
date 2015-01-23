@@ -143,7 +143,7 @@ class Shipping extends Ups
 
         $shipToNode = $shipmentNode->appendChild($xml->createElement('ShipTo'));
 
-        $shipToNode->appendChild($xml->createElement('CompanyName', $shipment->ShipTo->CompanyName));
+         $shipToNode->appendChild($xml->createElement('CompanyName', $shipment->ShipTo->CompanyName));
 
         if (isset($shipment->ShipTo->AttentionName)) {
             $shipToNode->appendChild($xml->createElement('AttentionName', $shipment->ShipTo->AttentionName));
@@ -176,7 +176,7 @@ class Shipping extends Ups
         if (isset($shipment->ShipFrom)) {
             $shipFromNode = $shipmentNode->appendChild($xml->createElement('ShipFrom'));
 
-            $shipFromNode->appendChild($xml->createElement('CompanyName', $shipment->ShipFrom->CompanyName));
+         //   $shipFromNode->appendChild($xml->createElement('CompanyName', $shipment->ShipFrom->CompanyName));
 
             if ($shipment->ShipFrom->AttentionName) {
                 $shipFromNode->appendChild($xml->createElement('AttentionName', $shipment->ShipFrom->AttentionName));
@@ -224,12 +224,14 @@ class Shipping extends Ups
         if (isset($shipment->PaymentInformation)) {
             $paymentNode = $shipmentNode->appendChild($xml->createElement('PaymentInformation'));
 
+            //ShipmentCharge
             if ($shipment->PaymentInformation->Prepaid) {
                 $node = $paymentNode->appendChild($xml->createElement('Prepaid'));
-                $node = $node->appendChild($xml->createElement('BillShipper'));
+              //  $node = $paymentNode->appendChild($xml->createElement('BillShipper'));
+               $xxNode = $node->appendChild($xml->createElement('BillShipper'));
 
                 if ($shipment->PaymentInformation->Prepaid->BillShipper->AccountNumber) {
-                    $node->appendChild($xml->createElement('AccountNumber', $shipment->PaymentInformation->Prepaid->BillShipper->AccountNumber));
+                    $xxNode->appendChild($xml->createElement('AccountNumber', $shipment->PaymentInformation->Prepaid->BillShipper->AccountNumber));
                 } else if ($shipment->PaymentInformation->Prepaid->BillShipper->CreditCard) {
                     $ccNode = $node->appendChild($xml->createElement('CreditCard'));
                     $ccNode->appendChild($xml->createElement('Type', $shipment->PaymentInformation->Prepaid->BillShipper->CreditCard->Type));

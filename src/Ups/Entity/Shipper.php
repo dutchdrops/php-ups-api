@@ -32,7 +32,7 @@ class Shipper implements NodeInterface
     /**
      * @var string
      */
-    protected $attentionName;
+    public $attentionName;
 
     /**
      * @var string
@@ -75,8 +75,8 @@ class Shipper implements NodeInterface
             if (isset($attributes->Name)) {
                 $this->setName($attributes->Name);
             }
-            if (isset($attributes->AttentionName)) {
-                $this->setAttentionName($attributes->AttentionName);
+            if (isset($attributes->attentionName)) {
+                $this->setAttentionName($attributes->attentionName);
             }
             if (isset($attributes->TaxIdentificationNumber)) {
                 $this->setTaxIdentificationNumber($attributes->TaxIdentificationNumber);

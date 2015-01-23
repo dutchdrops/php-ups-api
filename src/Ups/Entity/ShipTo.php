@@ -108,8 +108,8 @@ class ShipTo implements NodeInterface
             if (isset($attributes->CompanyName)) {
                 $this->setCompanyName($attributes->CompanyName);
             }
-            if (isset($attributes->AttentionName)) {
-                $this->setAttentionName($attributes->AttentionName);
+            if (isset($attributes->attentionName)) {
+                $this->setAttentionName($attributes->attentionName);
             }
             if (isset($attributes->PhoneNumber)) {
                 $this->setPhoneNumber($attributes->PhoneNumber);

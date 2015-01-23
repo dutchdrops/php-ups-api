@@ -103,7 +103,7 @@ class Service implements NodeInterface
      */
     public function getCode()
     {
-        return $this->code;
+        return $this->Code;
     }
 
     /**
@@ -112,7 +112,7 @@ class Service implements NodeInterface
      */
     public function setCode($code)
     {
-        $this->code = $code;
+        $this->Code = $code;
         return $this;
     }
 

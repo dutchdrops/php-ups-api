@@ -33,6 +33,7 @@ class Request implements RequestInterface
      */
     public function request($access, $request, $endpointurl)
     {
+
         $this->setAccess($access);
         $this->setRequest($request);
         $this->setEndpointUrl($endpointurl);
