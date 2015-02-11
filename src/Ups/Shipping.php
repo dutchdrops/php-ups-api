@@ -52,6 +52,8 @@ class Shipping extends Ups
     {
         $request = $this->createConfirmRequest($validation, $shipment, $labelSpecOpts, $receiptSpecOpts);
 
+        echo highlight_string($request);
+
         $response = $this->request($this->createAccess(), $request, $this->compileEndpointUrl($this->shipConfirmEndpoint));
 
         if ($response->Response->ResponseStatusCode == 0) {
@@ -76,6 +78,8 @@ class Shipping extends Ups
      */
     private function createConfirmRequest($validation, $shipment, $labelSpecOpts, $receiptSpecOpts)
     {
+
+
         $xml = new DOMDocument();
         $xml->formatOutput = true;
 
@@ -149,6 +153,9 @@ class Shipping extends Ups
             $shipToNode->appendChild($xml->createElement('AttentionName', $shipment->ShipTo->AttentionName));
         }
 
+
+
+
         if (isset($shipment->ShipTo->PhoneNumber)) {
             $shipToNode->appendChild($xml->createElement('PhoneNumber', $shipment->ShipTo->PhoneNumber));
         }
@@ -197,9 +204,9 @@ class Shipping extends Ups
         if (isset($shipment->SoldTo)) {
             $soldToNode = $shipmentNode->appendChild($xml->createElement('SoldTo'));
 
-            if ($shipment->SoldTo->Option) {
-                $soldToNode->appendChild($xml->createElement('Option', $shipment->SoldTo->Option));
-            }
+//            if ($shipment->SoldTo->Option) {
+//                $soldToNode->appendChild($xml->createElement('Option', $shipment->SoldTo->Option));
+//            }
 
             $soldToNode->appendChild($xml->createElement('CompanyName', $shipment->SoldTo->CompanyName));
 
@@ -220,6 +227,8 @@ class Shipping extends Ups
                 $soldToNode->appendChild($addressNode);
             }
         }
+
+
 
         if (isset($shipment->PaymentInformation)) {
             $paymentNode = $shipmentNode->appendChild($xml->createElement('PaymentInformation'));
@@ -272,13 +281,23 @@ class Shipping extends Ups
             } else if ($shipment->PaymentInformation->ConsigneeBilled) {
                 $paymentNode->appendChild($xml->createElement('ConsigneeBilled'));
             }
-        } else if ($shipment->ItemizedPaymentInformation) {
+        } else if ($shipment->ItemPaymentInformation) {
+
+
+            $itemPaymentNode = $shipmentNode->appendChild($xml->createElement('ItemizedPaymentInformation'));
+            foreach($shipment->ItemPaymentInformation as $itemPayment){
+             $chargerNode =  $itemPaymentNode->appendChild($xml->createElement('ShipmentCharge'));
+                $chargerNode->appendChild($xml->createElement('Type', $itemPayment->type));
+                $billShipperNode =  $chargerNode->appendChild($xml->createElement('BillShipper'));
+                $billShipperNode->appendChild($xml->createElement('AccountNumber', $itemPayment->accountNumber));
+            }
             //$paymentNode = $shipmentNode->appendChild($xml->createElement('ItemizedPaymentInformation'));
         }
 
+
         if (isset($shipment->GoodsNotInFreeCirculationIndicator)) {
-            $shipmentNode->appendChild($xml->createElement('GoodsNotInFreeCirculationIndicator'));
-        }
+            $shipmentNode->appendChild($xml->createElement('GoodsNotInFreeCirculationIndicator',1));
+              }
 
         if (isset($shipment->MovementReferenceNumber)) {
             $shipmentNode->appendChild($xml->createElement('MovementReferenceNumber', $shipment->MovementReferenceNumber));
@@ -290,6 +309,118 @@ class Shipping extends Ups
         if (isset($shipment->Service->Description)) {
             $serviceNode->appendChild($xml->createElement('Description', $shipment->Service->Description));
         }
+
+
+
+
+
+
+
+        $international = true;
+
+        if( $international ==  true) {
+
+            $shipmentServiceOptions = $shipmentNode->appendChild($xml->createElement('ShipmentServiceOptions'));
+
+            if (isset($shipment->ShipmentServiceOptions->notification->notificationCode)) {
+                $notify = $shipmentServiceOptions->appendChild($xml->createElement('Notification'));
+
+                $notify->appendChild(
+                    $xml->createElement(
+                        'NotificationCode',
+                        $shipment->ShipmentServiceOptions->notification->notificationCode
+                    )
+                );
+                $Email = $notify->appendChild($xml->createElement('EMailMessage'));
+
+                $Email->appendChild(
+                    $xml->createElement(
+                        'EMailAdress',
+                        $shipment->ShipmentServiceOptions->notification->notificationEmail
+                    )
+                );
+                $Email->appendChild(
+                    $xml->createElement(
+                        'UndeliverableEMailAddress',
+                        $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
+                    )
+                );
+            }
+
+            $internationalForm = $shipmentServiceOptions->appendChild($xml->createElement('InternationalForms'));
+
+            $internationalForm->appendChild($xml->createElement('FormType', '01')); // NOIDEA WHAT THIS IS?
+
+
+
+            foreach($shipment->ShipmentServiceOptions->products as $product){
+
+                $shipProduct = $internationalForm->appendChild($xml->createElement('product'));
+                $shipProduct->appendChild(
+                    $xml->createElement(
+                        'FromType',
+                        '01'
+                    )
+                );
+
+
+                $shipProduct->appendChild(
+                    $xml->createElement(
+                        'Description',
+                        $product->description
+                    )
+                );
+
+                $shipProduct->appendChild(
+                    $xml->createElement(
+                        'CommodityCode',
+                        $product->communitieCode
+                    )
+                );
+
+                $shipProduct->appendChild(
+                    $xml->createElement(
+                        'PartNumber',
+                        'PART1' //  $product->PartNumber
+                    )
+                );
+
+                $shipProduct->appendChild(
+                    $xml->createElement(
+                        'originCountry',
+                        'US' //$product->originCountry
+                    )
+                );
+
+                $shipProductUnit = $shipProduct->appendChild($xml->createElement('Unit'));
+                $shipProductUnit->appendChild($xml->createElement('Value', number_format($product->price,2)));
+                $shipProductUnit->appendChild($xml->createElement('Number', $product->Qty));
+                $shipProductUnitmessuare = $shipProductUnit->appendChild($xml->createElement('UnitOfMeasurement'));
+                $shipProductUnitmessuare->appendChild($xml->createElement('Code','PC'));
+                $shipProductUnitmessuare->appendChild($xml->createElement('Description','Piece'));
+
+            }
+
+
+            $internationalForm->appendChild($xml->createElement('InvoiceNumber', $shipment->ShipmentServiceOptions->invoiceNumber)); // NOIDEA WHAT THIS IS?
+
+            $internationalForm->appendChild($xml->createElement('InvoiceDate', $shipment->ShipmentServiceOptions->invoiceDate)); // NOIDEA WHAT THIS IS?
+
+
+
+            $internationalForm->appendChild($xml->createElement('TermsOfShipment', 'DDP')); // NOIDEA WHAT THIS IS?
+            $internationalForm->appendChild($xml->createElement('ReasonForExport','SALE')); // NOIDEA WHAT THIS IS?
+
+            $internationalForm->appendChild($xml->createElement('DeclarationStatement','I hereby certify that the information on this invoice is true
+             and correct and the contents and value of this shipment is as stated above.')); // NOIDEA WHAT THIS IS?
+
+            $internationalForm->appendChild($xml->createElement('CurrencyCode', $shipment->ShipmentServiceOptions->currencyCode)); // NOIDEA WHAT THIS IS?
+
+
+
+
+        }
+
 
         if (isset($shipment->InvoiceLineTotal)) {
             $node = $shipmentNode->appendChild($xml->createElement('InvoiceLineTotal'));

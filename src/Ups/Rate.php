@@ -37,13 +37,12 @@ class Rate extends Ups
     private $requestOption;
 
     /**
-     * @param $rateRequest
+     * @param  $rateRequest
      * @return RateRequest
      * @throws Exception
      */
     public function shopRates($rateRequest)
     {
-
         if ($rateRequest instanceof Shipment) {
             $shipment = $rateRequest;
             $rateRequest = new RateRequest();

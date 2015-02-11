@@ -20,6 +20,10 @@ class Shipment
     public $Service;
 
     /** @deprecated */
+    public $SoldTo;
+
+
+    /** @deprecated */
     public $Package = array();
 
     /** @deprecated */
@@ -38,10 +42,28 @@ class Shipment
      */
     private $rateInformation;
 
+
+
+    /**
+     * @var ItemPaymentInformation
+     */
+    public $ItemPaymentInformation;
+
+
+
     /**
      * @var string
      */
     private $description;
+
+    /**
+     * @var string
+     */
+    public $GoodsNotInFreeCirculationIndicator;
+    /**
+     * @var string
+     */
+    private $soldTo;
 
     /**
      * @var Shipper
@@ -202,6 +224,22 @@ class Shipment
         return $this;
     }
 
+
+    /**
+     * @param ShipTo $shipTo
+     *
+     * @return $this
+     */
+    public function setSoldTo(SoldTo $soldTo)
+    {
+        $this->SoldTo = $soldTo;
+        $this->soldTo = $soldTo;
+
+        return $this;
+    }
+
+
+
     /**
      * @return ShipmentServiceOptions
      */
@@ -253,6 +291,22 @@ class Shipment
     }
 
     /**
+     * @param ItemPaymentInformation $itemInfo
+     *
+     * @return $this
+     * @internal param PaymentInformation $paymentInformation
+     */
+    public function setItemizedPaymentInformation(array $itemInfo)
+    {
+        $this->ItemPaymentInformation = $itemInfo;
+        $this->ItemPaymentInformation = $itemInfo;
+
+        return $this;
+    }
+
+
+
+    /**
      * @param PaymentInformation $paymentInformation
      *
      * @return $this
@@ -264,6 +318,12 @@ class Shipment
 
         return $this;
     }
+
+        public function setGoodsNotInFreeCirculationIndicator($goodsFreeIndicator)
+        {
+            $this->GoodsNotInFreeCirculationIndicator =    $goodsFreeIndicator;
+        }
+
 
     /**
      * If called, returned prices will include negotiated rates (discounts will be applied)

@@ -16,14 +16,14 @@ class UnitOfMeasurement implements NodeInterface
     const UOM_CM = 'CM'; // Centimeters
 
     /** @deprecated */
-    public $Code = self::UOM_LBS;
+    public $Code =  'KGS';
     /** @deprecated */
     public $Description;
 
     /**
      * @var string
      */
-    private $code = self::UOM_LBS;
+    private $code =  'KGS';
 
     /**
      * @var string
@@ -35,6 +35,7 @@ class UnitOfMeasurement implements NodeInterface
      */
     public function __construct($attributes = null)
     {
+
         if (null !== $attributes) {
             if (isset($attributes->Code)) {
                 $this->setCode($attributes->Code);
