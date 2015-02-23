@@ -23,7 +23,7 @@ class UnitOfMeasurement implements NodeInterface
     /**
      * @var string
      */
-    private $code =  'KGS';
+    private $code =  'LBS';
 
     /**
      * @var string

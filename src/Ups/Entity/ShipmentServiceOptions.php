@@ -48,7 +48,7 @@ class ShipmentServiceOptions
 
 
     /**
-     * @param Notification $notification
+     * @param Product $product
      *
      * @return $this
      * @internal param Notification $notification

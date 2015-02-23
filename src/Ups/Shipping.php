@@ -52,9 +52,17 @@ class Shipping extends Ups
     {
         $request = $this->createConfirmRequest($validation, $shipment, $labelSpecOpts, $receiptSpecOpts);
 
-        echo highlight_string($request);
+        if($this->debug == true)
+        {
+            echo '<h1>REQUEST TO SEND</h1>'.highlight_string($request);
+        }
 
         $response = $this->request($this->createAccess(), $request, $this->compileEndpointUrl($this->shipConfirmEndpoint));
+
+        if($this->debug == true)
+        {
+            echo '<h1>REQUEST TO RECEIVE</h1>'.var_dump($response);
+        }
 
         if ($response->Response->ResponseStatusCode == 0) {
             throw new Exception(
@@ -131,7 +139,7 @@ class Shipping extends Ups
         }
 
         if (isset($shipment->Shipper->PhoneNumber)) {
-            $shipperNode->appendChild($xml->createElement('PhoneNumber', $shipment->Shipper->PhoneNumber));
+            $shipperNode->appendChild($xml->createElement('PhoneNumber', trim($shipment->Shipper->PhoneNumber)));
         }
 
         if (isset($shipment->Shipper->FaxNumber)) {
@@ -147,7 +155,7 @@ class Shipping extends Ups
 
         $shipToNode = $shipmentNode->appendChild($xml->createElement('ShipTo'));
 
-         $shipToNode->appendChild($xml->createElement('CompanyName', $shipment->ShipTo->CompanyName));
+        $shipToNode->appendChild($xml->createElement('CompanyName', $shipment->ShipTo->CompanyName));
 
         if (isset($shipment->ShipTo->AttentionName)) {
             $shipToNode->appendChild($xml->createElement('AttentionName', $shipment->ShipTo->AttentionName));
@@ -183,7 +191,7 @@ class Shipping extends Ups
         if (isset($shipment->ShipFrom)) {
             $shipFromNode = $shipmentNode->appendChild($xml->createElement('ShipFrom'));
 
-         //   $shipFromNode->appendChild($xml->createElement('CompanyName', $shipment->ShipFrom->CompanyName));
+            //   $shipFromNode->appendChild($xml->createElement('CompanyName', $shipment->ShipFrom->CompanyName));
 
             if ($shipment->ShipFrom->AttentionName) {
                 $shipFromNode->appendChild($xml->createElement('AttentionName', $shipment->ShipFrom->AttentionName));
@@ -204,9 +212,9 @@ class Shipping extends Ups
         if (isset($shipment->SoldTo)) {
             $soldToNode = $shipmentNode->appendChild($xml->createElement('SoldTo'));
 
-//            if ($shipment->SoldTo->Option) {
-//                $soldToNode->appendChild($xml->createElement('Option', $shipment->SoldTo->Option));
-//            }
+            //            if ($shipment->SoldTo->Option) {
+            //                $soldToNode->appendChild($xml->createElement('Option', $shipment->SoldTo->Option));
+            //            }
 
             $soldToNode->appendChild($xml->createElement('CompanyName', $shipment->SoldTo->CompanyName));
 
@@ -236,8 +244,8 @@ class Shipping extends Ups
             //ShipmentCharge
             if ($shipment->PaymentInformation->Prepaid) {
                 $node = $paymentNode->appendChild($xml->createElement('Prepaid'));
-              //  $node = $paymentNode->appendChild($xml->createElement('BillShipper'));
-               $xxNode = $node->appendChild($xml->createElement('BillShipper'));
+                //  $node = $paymentNode->appendChild($xml->createElement('BillShipper'));
+                $xxNode = $node->appendChild($xml->createElement('BillShipper'));
 
                 if ($shipment->PaymentInformation->Prepaid->BillShipper->AccountNumber) {
                     $xxNode->appendChild($xml->createElement('AccountNumber', $shipment->PaymentInformation->Prepaid->BillShipper->AccountNumber));
@@ -286,7 +294,7 @@ class Shipping extends Ups
 
             $itemPaymentNode = $shipmentNode->appendChild($xml->createElement('ItemizedPaymentInformation'));
             foreach($shipment->ItemPaymentInformation as $itemPayment){
-             $chargerNode =  $itemPaymentNode->appendChild($xml->createElement('ShipmentCharge'));
+                $chargerNode =  $itemPaymentNode->appendChild($xml->createElement('ShipmentCharge'));
                 $chargerNode->appendChild($xml->createElement('Type', $itemPayment->type));
                 $billShipperNode =  $chargerNode->appendChild($xml->createElement('BillShipper'));
                 $billShipperNode->appendChild($xml->createElement('AccountNumber', $itemPayment->accountNumber));
@@ -297,7 +305,7 @@ class Shipping extends Ups
 
         if (isset($shipment->GoodsNotInFreeCirculationIndicator)) {
             $shipmentNode->appendChild($xml->createElement('GoodsNotInFreeCirculationIndicator',1));
-              }
+        }
 
         if (isset($shipment->MovementReferenceNumber)) {
             $shipmentNode->appendChild($xml->createElement('MovementReferenceNumber', $shipment->MovementReferenceNumber));
@@ -312,11 +320,7 @@ class Shipping extends Ups
 
 
 
-
-
-
-
-        $international = true;
+        $international = false;
 
         if( $international ==  true) {
 
@@ -455,11 +459,11 @@ class Shipping extends Ups
             $umNode = $pwNode->appendChild($xml->createElement('UnitOfMeasurement'));
 
             if (isset($package->PackageWeight->UnitOfMeasurement->Code)) {
-                $umNode->appendChild($xml->createElement('Code', $package->PackageWeight->UnitOfMeasurement->Code));
+                $pwNode->appendChild($xml->createElement('Code', $package->PackageWeight->UnitOfMeasurement->Code));
             }
 
             if (isset($package->PackageWeight->UnitOfMeasurement->Description)) {
-                $umNode->appendChild($xml->createElement('Description', $package->PackageWeight->UnitOfMeasurement->Description));
+                $pwNode->appendChild($xml->createElement('Description', $package->PackageWeight->UnitOfMeasurement->Description));
             }
 
             $pwNode->appendChild($xml->createElement('Weight', $package->PackageWeight->Weight));

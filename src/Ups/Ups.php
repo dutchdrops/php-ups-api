@@ -38,6 +38,8 @@ abstract class Ups
      */
     protected $integrationBaseUrl = 'https://www.ups.com//ups.app/xml';
 
+
+    protected $debug = true;
     /**
      * @var bool
      */
