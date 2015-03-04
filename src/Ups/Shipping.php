@@ -320,7 +320,7 @@ class Shipping extends Ups
 
 
 
-        $international = false;
+        $international = true;
 
         if( $international ==  true) {
 
@@ -359,7 +359,7 @@ class Shipping extends Ups
 
             foreach($shipment->ShipmentServiceOptions->products as $product){
 
-                $shipProduct = $internationalForm->appendChild($xml->createElement('product'));
+                $shipProduct = $internationalForm->appendChild($xml->createElement('Product'));
                 $shipProduct->appendChild(
                     $xml->createElement(
                         'FromType',
@@ -391,7 +391,7 @@ class Shipping extends Ups
 
                 $shipProduct->appendChild(
                     $xml->createElement(
-                        'originCountry',
+                        'OriginCountryCode',
                         'US' //$product->originCountry
                     )
                 );
@@ -408,7 +408,7 @@ class Shipping extends Ups
 
             $internationalForm->appendChild($xml->createElement('InvoiceNumber', $shipment->ShipmentServiceOptions->invoiceNumber)); // NOIDEA WHAT THIS IS?
 
-            $internationalForm->appendChild($xml->createElement('InvoiceDate', $shipment->ShipmentServiceOptions->invoiceDate)); // NOIDEA WHAT THIS IS?
+            $internationalForm->appendChild($xml->createElement('InvoiceDate', date('Ymd',strtotime($shipment->ShipmentServiceOptions->invoiceDate)))) ; // NOIDEA WHAT THIS IS?
 
 
 
