@@ -22,7 +22,6 @@ class Shipment
     /** @deprecated */
     public $SoldTo;
 
-
     /** @deprecated */
     public $Package = array();
 
@@ -42,14 +41,15 @@ class Shipment
      */
     private $rateInformation;
 
-
-
     /**
      * @var ItemPaymentInformation
      */
     public $ItemPaymentInformation;
 
-
+    /**
+     * @var string
+     */
+    public $internationalShipping;
 
     /**
      * @var string
@@ -60,6 +60,11 @@ class Shipment
      * @var string
      */
     public $GoodsNotInFreeCirculationIndicator;
+
+    /**
+     * @var string
+     */
+    public $insurance;
     /**
      * @var string
      */
@@ -74,6 +79,11 @@ class Shipment
      * @var ShipTo;
      */
     private $shipTo;
+
+    /**
+     * @var AlternativeDeliveryAddress
+     */
+    public $alternativeDeliveryAddress;
 
     /**
      * @var ShipFrom
@@ -98,8 +108,11 @@ class Shipment
     public function __construct()
     {
         $this->setShipper(new Shipper());
-       // $this->setShipFrom(new ShipFrom());
+        // $this->setShipFrom(new ShipFrom());
         $this->setShipTo(new ShipTo());
+
+        $this->setAlternativeAddress(new AlternativeDeliveryAddress());
+
         $this->setShipmentServiceOptions(new ShipmentServiceOptions());
         $this->setService(new Service());
         $this->rateInformation = null;
@@ -224,6 +237,18 @@ class Shipment
         return $this;
     }
 
+    /**
+     * @param AlternativeDeliveryAddress $alternativeDeliveryAddress
+     *
+     * @return $this
+     * @internal param ShipTo $shipTo
+     */
+    public function setAlternativeAddress(AlternativeDeliveryAddress $alternativeDeliveryAddress)
+    {
+        $this->alternativeDeliveryAddress = $alternativeDeliveryAddress;
+
+        return $this;
+    }
 
     /**
      * @param ShipTo $shipTo
@@ -237,8 +262,6 @@ class Shipment
 
         return $this;
     }
-
-
 
     /**
      * @return ShipmentServiceOptions
@@ -304,8 +327,6 @@ class Shipment
         return $this;
     }
 
-
-
     /**
      * @param PaymentInformation $paymentInformation
      *
@@ -319,11 +340,28 @@ class Shipment
         return $this;
     }
 
-        public function setGoodsNotInFreeCirculationIndicator($goodsFreeIndicator)
-        {
-            $this->GoodsNotInFreeCirculationIndicator =    $goodsFreeIndicator;
-        }
+    public function setGoodsNotInFreeCirculationIndicator($goodsFreeIndicator)
+    {
+        $this->GoodsNotInFreeCirculationIndicator = $goodsFreeIndicator;
+    }
 
+    public function setInsuranceFee($insurance)
+    {
+        $this->insurance = $insurance;
+    }
+
+    public function setInternationShipping($internationalShipping)
+    {
+        $this->internationalShipping = $internationalShipping;
+
+        return $this;
+    }
+
+    public function getInternationShipping()
+    {
+
+        return $this->internationalShipping;
+    }
 
     /**
      * If called, returned prices will include negotiated rates (discounts will be applied)

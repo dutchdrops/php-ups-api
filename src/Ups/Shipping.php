@@ -161,9 +161,6 @@ class Shipping extends Ups
             $shipToNode->appendChild($xml->createElement('AttentionName', $shipment->ShipTo->AttentionName));
         }
 
-
-
-
         if (isset($shipment->ShipTo->PhoneNumber)) {
             $shipToNode->appendChild($xml->createElement('PhoneNumber', $shipment->ShipTo->PhoneNumber));
         }
@@ -188,7 +185,8 @@ class Shipping extends Ups
 
         $shipToNode->appendChild($addressNode);
 
-        if (isset($shipment->ShipFrom)) {
+        if (isset($shipment->ShipFrom))
+        {
             $shipFromNode = $shipmentNode->appendChild($xml->createElement('ShipFrom'));
 
             //   $shipFromNode->appendChild($xml->createElement('CompanyName', $shipment->ShipFrom->CompanyName));
@@ -209,7 +207,10 @@ class Shipping extends Ups
             $shipFromNode->appendChild($addressNode);
         }
 
-        if (isset($shipment->SoldTo)) {
+
+
+        if (isset($shipment->SoldTo))
+        {
             $soldToNode = $shipmentNode->appendChild($xml->createElement('SoldTo'));
 
             //            if ($shipment->SoldTo->Option) {
@@ -238,7 +239,34 @@ class Shipping extends Ups
 
 
 
-        if (isset($shipment->PaymentInformation)) {
+        if (isset($shipment->alternativeDeliveryAddress->CompanyName)) {
+            $alternativeNode = $shipmentNode->appendChild($xml->createElement('AlternateDeliveryAddress'));
+
+            $alternativeNode->appendChild($xml->createElement('Name', $shipment->alternativeDeliveryAddress->CompanyName));
+
+            if ($shipment->AlternateDeliveryAddress->AttentionName) {
+                $alternativeNode->appendChild($xml->createElement('AttentionName', $shipment->alternativeDeliveryAddress->AttentionName));
+            }
+
+            $alternativeNode->appendChild($xml->createElement('UPSAccessPointID',''));
+
+
+            if ($shipment->alternativeDeliveryAddress->Address) {
+                $addressNode = $xml->importNode($this->compileAddressNode($shipment->alternativeDeliveryAddress->Address), true);
+                $alternativeNode->appendChild($addressNode);
+            }
+
+            $alternativeNode = $shipmentNode->appendChild($xml->createElement('ShipmentIndicationType'));
+
+            $alternativeNode->appendChild($xml->createElement('Code', '01'));
+            $alternativeNode->appendChild($xml->createElement('Description', 'DirectToRetail'));
+        }
+
+
+
+
+        if (isset($shipment->PaymentInformation))
+        {
             $paymentNode = $shipmentNode->appendChild($xml->createElement('PaymentInformation'));
 
             //ShipmentCharge
@@ -318,11 +346,7 @@ class Shipping extends Ups
             $serviceNode->appendChild($xml->createElement('Description', $shipment->Service->Description));
         }
 
-
-
-        $international = true;
-
-        if( $international ==  true) {
+        if( $shipment->internationalShipping ) {
 
             $shipmentServiceOptions = $shipmentNode->appendChild($xml->createElement('ShipmentServiceOptions'));
 
@@ -356,6 +380,22 @@ class Shipping extends Ups
             $internationalForm->appendChild($xml->createElement('FormType', '01')); // NOIDEA WHAT THIS IS?
 
 
+            $insuirance = $internationalForm->appendChild($xml->createElement('FreightCharges'));
+            $insuirance->appendChild(
+                $xml->createElement('MonetaryValue', $shipment->ShipmentServiceOptions->shippingCost)
+            ); // NOIDEA WHAT THIS IS?
+
+
+            if($shipment->ShipmentServiceOptions->insurance){
+                $insuirance = $internationalForm->appendChild($xml->createElement('InsuranceCharges'));
+                $insuirance->appendChild(
+                    $xml->createElement('InsuranceCharges', $shipment->ShipmentServiceOptions->insurance)
+                ); // NOIDEA WHAT THIS IS?
+            }
+
+
+
+
 
             foreach($shipment->ShipmentServiceOptions->products as $product){
 
@@ -378,7 +418,7 @@ class Shipping extends Ups
                 $shipProduct->appendChild(
                     $xml->createElement(
                         'CommodityCode',
-                        $product->communitieCode
+                        $product->commodityCode
                     )
                 );
 
@@ -407,12 +447,9 @@ class Shipping extends Ups
 
 
             $internationalForm->appendChild($xml->createElement('InvoiceNumber', $shipment->ShipmentServiceOptions->invoiceNumber)); // NOIDEA WHAT THIS IS?
-
             $internationalForm->appendChild($xml->createElement('InvoiceDate', date('Ymd',strtotime($shipment->ShipmentServiceOptions->invoiceDate)))) ; // NOIDEA WHAT THIS IS?
 
-
-
-            $internationalForm->appendChild($xml->createElement('TermsOfShipment', 'DDP')); // NOIDEA WHAT THIS IS?
+            $internationalForm->appendChild($xml->createElement('TermsOfShipment', 'DDU')); // NOIDEA WHAT THIS IS?
             $internationalForm->appendChild($xml->createElement('ReasonForExport','SALE')); // NOIDEA WHAT THIS IS?
 
             $internationalForm->appendChild($xml->createElement('DeclarationStatement','I hereby certify that the information on this invoice is true
@@ -472,19 +509,19 @@ class Shipping extends Ups
                 $node->appendChild($xml->createElement('LargePackageIndicator'));
             }
 
-            if (isset($package->ReferenceNumber)) {
-                $refNode = $node->appendChild($xml->createElement('ReferenceNumber'));
-
-                if ($package->ReferenceNumber->BarCodeIndicator) {
-                    $refNode->appendChild($xml->createElement('BarCodeIndicator', $package->ReferenceNumber->BarCodeIndicator));
-                }
-
-                $refNode->appendChild($xml->createElement('Code', $package->ReferenceNumber->Code));
-                $refNode->appendChild($xml->createElement('Value', $package->ReferenceNumber->Value));
-            }
+//            if (isset($package->ReferenceNumber)) {
+//                $refNode = $node->appendChild($xml->createElement('ReferenceNumber'));
+//
+//                if ($package->ReferenceNumber->BarCodeIndicator) {
+//                    $refNode->appendChild($xml->createElement('BarCodeIndicator', $package->ReferenceNumber->BarCodeIndicator));
+//                }
+//
+//                $refNode->appendChild($xml->createElement('Code', $package->ReferenceNumber->Code));
+//                $refNode->appendChild($xml->createElement('Value', $package->ReferenceNumber->Value));con
+//            }
 
             if (isset($package->AdditionalHandling)) {
-                $refNode->appendChild($xml->createElement('AdditionalHandling'));
+               // $refNode->appendChild($xml->createElement('AdditionalHandling'));
             }
         }
 

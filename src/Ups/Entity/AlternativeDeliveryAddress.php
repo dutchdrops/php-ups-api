@@ -5,7 +5,7 @@ use DOMDocument;
 use DOMElement;
 use Ups\NodeInterface;
 
-class ShipTo implements NodeInterface
+class AlternativeDeliveryAddress implements NodeInterface
 {
     /** @deprecated */
     public $LocationID;
@@ -139,7 +139,7 @@ class ShipTo implements NodeInterface
             $document = new DOMDocument();
         }
 
-        $node = $document->createElement('ShipTo');
+        $node = $document->createElement('AlternativeDeliveryAddress');
         $node->appendChild($document->createElement('CompanyName', $this->getCompanyName()));
         $node->appendChild($document->createElement('AttentionName', $this->getAttentionName()));
 

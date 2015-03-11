@@ -11,7 +11,7 @@ class Product
     public $UOMCode;
     public $UOMDescription;
     public $price;
-    public $communitieCode;
+    public $commodityCode;
     public $PartNumber;
     public $originCountry;
 

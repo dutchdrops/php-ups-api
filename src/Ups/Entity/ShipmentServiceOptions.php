@@ -3,17 +3,34 @@ namespace Ups\Entity;
 
 class ShipmentServiceOptions
 {
+
     public $SaturdayPickup;
+
     public $SaturdayDelivery;
+
     public $CallTagARS;
+
     public $NegotiatedRatesIndicator;
 
-    public  $notification;
-    public  $invoiceNumber;
-    public  $invoiceDate;
+    public $notification;
+
+    public $invoiceNumber;
+
+
+    public $shippingCost;
+
+
+    public $signature;
+
+    public $insurance;
+
+
+    public $invoiceDate;
 
     public $currencyCode;
-    public  $products;
+
+    public $products;
+
     function __construct($response = null)
     {
         $this->CallTagARS = new CallTagARS();
@@ -34,17 +51,56 @@ class ShipmentServiceOptions
         }
     }
 
+
+    public function setInsuranceFee($insurance)
+    {
+        $this->insurance = $insurance;
+    }
+
+    public function setShippingCost($shippingCost)
+    {
+        $this->shippingCost = $shippingCost;
+    }
+
     /**
      * @param Notification $notification
      *
      * @return $this
      * @internal param Notification $notification
      */
-            public function SetNotification(Notification $notification)
-            {
-                $this->notification = $notification;
-                return $this;
-            }
+    public function SetNotification(Notification $notification)
+    {
+        $this->notification = $notification;
+
+        return $this;
+    }
+
+    /**
+     * @param  $insurance
+     *
+     * @return $this
+     * @internal param Notification $notification
+     */
+    public function SetInsurance($insurance)
+    {
+        $this->insurance = $insurance;
+
+        return $this;
+    }
+
+    /**
+     * @param $signature
+     *
+     * @return $this
+     * @internal param $insurance
+     * @internal param Notification $notification
+     */
+    public function SetSignatureRequired($signature)
+    {
+        $this->signature = $signature;
+
+        return $this;
+    }
 
 
     /**
@@ -53,35 +109,31 @@ class ShipmentServiceOptions
      * @return $this
      * @internal param Notification $notification
      */
-      public function setProducts(array $product)
+    public function setProducts(array $product)
     {
         $this->products = $product;
+
         return $this;
     }
-
 
     public function setInvoiceNumber($invoiceNumber)
     {
         $this->invoiceNumber = $invoiceNumber;
+
         return $this;
     }
-
 
     public function setCurrencyCode($currencyCode)
     {
         $this->currencyCode = $currencyCode;
+
         return $this;
     }
-
-
-
 
     public function setInvoiceDate($invoiceDate)
     {
         $this->invoiceDate = $invoiceDate;
+
         return $this;
     }
-
-
-
 }
