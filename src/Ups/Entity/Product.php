@@ -7,6 +7,8 @@ class Product
 {
     public $formType;
     public $description;
+    public $description1;
+    public $description2;
     public $Qty;
     public $UOMCode;
     public $UOMDescription;

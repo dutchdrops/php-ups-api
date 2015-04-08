@@ -417,6 +417,22 @@ class Shipping extends Ups
 
                 $shipProduct->appendChild(
                     $xml->createElement(
+                        'Description',
+                        $product->description1
+                    )
+                );
+
+
+                if($product->description2 != '') {
+                    $shipProduct->appendChild(
+                        $xml->createElement(
+                            'Description',
+                            $product->description2
+                        )
+                    );
+                }
+                $shipProduct->appendChild(
+                    $xml->createElement(
                         'CommodityCode',
                         $product->commodityCode
                     )
@@ -432,7 +448,7 @@ class Shipping extends Ups
                 $shipProduct->appendChild(
                     $xml->createElement(
                         'OriginCountryCode',
-                        'US' //$product->originCountry
+                        ($product->originCountry) ? $product->originCountry : 'NL'
                     )
                 );
 
