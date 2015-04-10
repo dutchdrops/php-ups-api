@@ -331,8 +331,9 @@ class Shipping extends Ups
         }
 
 
+
         if (isset($shipment->GoodsNotInFreeCirculationIndicator)) {
-            $shipmentNode->appendChild($xml->createElement('GoodsNotInFreeCirculationIndicator',1));
+            $shipmentNode->appendChild($xml->createElement('GoodsNotInFreeCirculationIndicator',0));
         }
 
         if (isset($shipment->MovementReferenceNumber)) {
