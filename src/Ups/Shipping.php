@@ -360,11 +360,12 @@ class Shipping extends Ups
                         $shipment->ShipmentServiceOptions->notification->notificationCode
                     )
                 );
-                $Email = $notify->appendChild($xml->createElement('EMailMessage'));
+
+                $Email = $notify->appendChild($xml->createElement('EMail'));
 
                 $Email->appendChild(
                     $xml->createElement(
-                        'EMailAdress',
+                        'EMailAddress',
                         $shipment->ShipmentServiceOptions->notification->notificationEmail
                     )
                 );
