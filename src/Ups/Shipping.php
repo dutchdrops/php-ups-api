@@ -352,29 +352,71 @@ class Shipping extends Ups
             $shipmentServiceOptions = $shipmentNode->appendChild($xml->createElement('ShipmentServiceOptions'));
 
             if (isset($shipment->ShipmentServiceOptions->notification->notificationCode)) {
-                $notify = $shipmentServiceOptions->appendChild($xml->createElement('Notification'));
 
-                $notify->appendChild(
-                    $xml->createElement(
-                        'NotificationCode',
-                        $shipment->ShipmentServiceOptions->notification->notificationCode
-                    )
-                );
+                if(is_array( $shipment->ShipmentServiceOptions->notification->notificationCode))
+                {
 
-                $Email = $notify->appendChild($xml->createElement('EMail'));
+                    foreach(  $shipment->ShipmentServiceOptions->notification->notificationCode as $notificationCode)
+                    {
+                        $notify = $shipmentServiceOptions->appendChild($xml->createElement('Notification'));
 
-                $Email->appendChild(
-                    $xml->createElement(
-                        'EMailAddress',
-                        $shipment->ShipmentServiceOptions->notification->notificationEmail
-                    )
-                );
-                $Email->appendChild(
-                    $xml->createElement(
-                        'UndeliverableEMailAddress',
-                        $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
-                    )
-                );
+
+                        $notify->appendChild(
+                            $xml->createElement(
+                                'NotificationCode',
+                                $notificationCode
+                            )
+                        );
+
+
+
+                        $Email = $notify->appendChild($xml->createElement('Email'));
+
+                        $Email->appendChild(
+                            $xml->createElement(
+                                'EMailAddress',
+                                $shipment->ShipmentServiceOptions->notification->notificationEmail
+                            )
+                        );
+                        $Email->appendChild(
+                            $xml->createElement(
+                                'UndeliverableEMailAddress',
+                                $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
+                            )
+                        );
+
+                    }
+
+
+                }else{
+
+                    $notify = $shipmentServiceOptions->appendChild($xml->createElement('Notification'));
+
+
+                    $notify->appendChild(
+                        $xml->createElement(
+                            'NotificationCode',
+                            $shipment->ShipmentServiceOptions->notification->notificationCode
+                        )
+                    );
+
+                    $Email = $notify->appendChild($xml->createElement('Email'));
+
+                    $Email->appendChild(
+                        $xml->createElement(
+                            'EMailAddress',
+                            $shipment->ShipmentServiceOptions->notification->notificationEmail
+                        )
+                    );
+                    $Email->appendChild(
+                        $xml->createElement(
+                            'UndeliverableEMailAddress',
+                            $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
+                        )
+                    );
+
+                }
+
             }
 
             $internationalForm = $shipmentServiceOptions->appendChild($xml->createElement('InternationalForms'));

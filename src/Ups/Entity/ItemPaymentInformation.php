@@ -3,7 +3,11 @@
 namespace Ups\Entity;
 
 
-class ItemPaymentInformation {
+use DOMDocument;
+use DOMNode;
+use Ups\NodeInterface;
+
+class ItemPaymentInformation  implements NodeInterface {
 
     public $ShipmentCharge;
     public $type;
@@ -15,4 +19,13 @@ class ItemPaymentInformation {
 
 
     }
-} 
+
+    /**
+     * @param null|DOMDocument $document
+     *
+     * @return DOMNode
+     */
+    public function toNode(DOMDocument $document = null)
+    {
+        // TODO: Implement toNode() method.
+}}
