@@ -333,7 +333,7 @@ class Shipping extends Ups
 
 
         if (isset($shipment->GoodsNotInFreeCirculationIndicator)) {
-    //        $shipmentNode->appendChild($xml->createElement('GoodsNotInFreeCirculationIndicator',0));
+            //        $shipmentNode->appendChild($xml->createElement('GoodsNotInFreeCirculationIndicator',0));
         }
 
         if (isset($shipment->MovementReferenceNumber)) {
@@ -368,22 +368,49 @@ class Shipping extends Ups
                             )
                         );
 
-
-
                         $Email = $notify->appendChild($xml->createElement('EMailMessage'));
 
-                        $Email->appendChild(
-                            $xml->createElement(
-                                'EMailAddress',
-                                $shipment->ShipmentServiceOptions->notification->notificationEmail
-                            )
-                        );
-                        $Email->appendChild(
-                            $xml->createElement(
-                                'UndeliverableEMailAddress',
-                                $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
-                            )
-                        );
+                        if($notificationCode == "012"){
+
+                            $Email->appendChild(
+                                $xml->createElement(
+                                    'EMailAddress',
+                                    $shipment->ShipmentServiceOptions->notification->notificationEmail
+                                )
+                            );
+
+                            $locale = $notify->appendChild($xml->createElement('Locale'));
+
+                            $locale->appendChild(
+                                $xml->createElement(
+                                    'Language',
+                                    'NLD'
+                                )
+                            );
+
+                            $locale->appendChild(
+                                $xml->createElement(
+                                    'Dialect',
+                                    '97'
+                                )
+                            );
+
+                        }else {
+
+
+                            $Email->appendChild(
+                                $xml->createElement(
+                                    'EMailAddress',
+                                    $shipment->ShipmentServiceOptions->notification->notificationEmail
+                                )
+                            );
+                            $Email->appendChild(
+                                $xml->createElement(
+                                    'UndeliverableEMailAddress',
+                                    $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
+                                )
+                            );
+                        }
 
                     }
 
@@ -581,7 +608,7 @@ class Shipping extends Ups
 //            }
 
             if (isset($package->AdditionalHandling)) {
-               // $refNode->appendChild($xml->createElement('AdditionalHandling'));
+                // $refNode->appendChild($xml->createElement('AdditionalHandling'));
             }
         }
 
