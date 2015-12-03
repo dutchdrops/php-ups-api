@@ -370,7 +370,7 @@ class Shipping extends Ups
 
 
 
-                        $Email = $notify->appendChild($xml->createElement('Email'));
+                        $Email = $notify->appendChild($xml->createElement('EMailMessage'));
 
                         $Email->appendChild(
                             $xml->createElement(
@@ -400,7 +400,7 @@ class Shipping extends Ups
                         )
                     );
 
-                    $Email = $notify->appendChild($xml->createElement('Email'));
+                    $Email = $notify->appendChild($xml->createElement('EMailMessage'));
 
                     $Email->appendChild(
                         $xml->createElement(
