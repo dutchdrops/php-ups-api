@@ -596,16 +596,16 @@ class Shipping extends Ups
                 $node->appendChild($xml->createElement('LargePackageIndicator'));
             }
 
-            if (isset($package->ReferenceNumber)) {
-                $refNode = $node->appendChild($xml->createElement('ReferenceNumber'));
+            //if (isset($package->ReferenceNumber)) {
+            //    $refNode = $node->appendChild($xml->createElement('ReferenceNumber'));
 
               //  if ($package->ReferenceNumber->BarCodeIndicator) {
               //      $refNode->appendChild($xml->createElement('BarCodeIndicator', $package->ReferenceNumber->BarCodeIndicator));
               //   }
 
-                $refNode->appendChild($xml->createElement('Code', $package->ReferenceNumber->Code));
-                $refNode->appendChild($xml->createElement('Value', $package->ReferenceNumber->Value));
-            }
+            //    $refNode->appendChild($xml->createElement('Code', $package->ReferenceNumber->Code));
+            //    $refNode->appendChild($xml->createElement('Value', $package->ReferenceNumber->Value));
+            //}
 
             if (isset($package->AdditionalHandling)) {
                 // $refNode->appendChild($xml->createElement('AdditionalHandling'));
