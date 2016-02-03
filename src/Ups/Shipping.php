@@ -604,7 +604,7 @@ class Shipping extends Ups
               //   }
 
                 $refNode->appendChild($xml->createElement('Code', $package->ReferenceNumber->Code));
-                $refNode->appendChild($xml->createElement('Value', $package->ReferenceNumber->Value));con
+                $refNode->appendChild($xml->createElement('Value', $package->ReferenceNumber->Value));
             }
 
             if (isset($package->AdditionalHandling)) {
