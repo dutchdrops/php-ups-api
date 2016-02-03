@@ -404,12 +404,12 @@ class Shipping extends Ups
                                     $shipment->ShipmentServiceOptions->notification->notificationEmail
                                 )
                             );
-                            $Email->appendChild(
-                                $xml->createElement(
-                                    'UndeliverableEMailAddress',
-                                    $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
-                                )
-                            );
+                            //$Email->appendChild(
+                            //    $xml->createElement(
+                            //        'UndeliverableEMailAddress',
+                            //        $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
+                            //    )
+                            //);
                         }
 
                     }
@@ -435,12 +435,12 @@ class Shipping extends Ups
                             $shipment->ShipmentServiceOptions->notification->notificationEmail
                         )
                     );
-                    $Email->appendChild(
-                        $xml->createElement(
-                            'UndeliverableEMailAddress',
-                            $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
-                        )
-                    );
+                    //$Email->appendChild(
+                    //    $xml->createElement(
+                    //        'UndeliverableEMailAddress',
+                    //        $shipment->ShipmentServiceOptions->notification->notificationUndelirableEmail
+                    //    )
+                    //);
 
                 }
 
